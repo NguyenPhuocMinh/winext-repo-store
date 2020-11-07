@@ -1,0 +1,15 @@
+{
+  "name": "app-repository",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Minh Nguyễn",
+  "license": "ISC",
+  "dependencies": {
+    "winrow": "^1.9.2"
+  }
+}
