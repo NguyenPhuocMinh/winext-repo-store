@@ -10,6 +10,6 @@
   "author": "Minh Nguyễn",
   "license": "ISC",
   "dependencies": {
-    "winrow": "^1.9.2"
+    "winrow": "git+https://github.com/NguyenPhuocMinh/app-webserver.git#5f2c35b1b6fc86a23d05c3d73dec8a4def429a8c"
   }
 }
