@@ -1,12 +1,14 @@
 {
   "name": "app-repository",
   "version": "1.0.0",
-  "description": "",
+  "description": "Build database mongoose with lib winrow express",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "mongoose"
+  ],
   "author": "Minh Nguyễn",
   "license": "ISC",
   "dependencies": {
