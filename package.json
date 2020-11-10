@@ -10,9 +10,9 @@
     "mongoose"
   ],
   "author": "Minh Nguyễn",
-  "license": "ISC",
+  "license": "MIT",
   "dependencies": {
-    "winrow": "^1.9.5",
+    "winrow": "^1.9.6",
     "winrow-logger": "^1.0.1"
   }
 }
