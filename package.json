@@ -13,6 +13,6 @@
   "license": "MIT",
   "dependencies": {
     "winrow": "^1.9.6",
-    "winrow-logger": "^1.0.1"
+    "winrow-logger": "^1.0.2"
   }
 }
