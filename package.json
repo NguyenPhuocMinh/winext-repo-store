@@ -13,7 +13,7 @@
   "author": "Minh Nguyễn",
   "license": "MIT",
   "dependencies": {
-    "winrow": "^2.0.0",
-    "winrow-logger": "^1.0.4"
+    "winrow": "^2.0.1",
+    "winrow-logger": "^1.0.5"
   }
 }

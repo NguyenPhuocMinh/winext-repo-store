@@ -9,11 +9,11 @@ const config = {
     info: 4,
   },
   colors: {
-    error: 'bold red cyanBG',
+    error: 'bold red blackBG',
     debug: 'bold blue blackBG',
     warn: 'bold yellow blackBG',
-    data: 'bold magenta',
-    info: 'underline green',
+    data: 'bold magenta blackBG',
+    info: 'bold green blackBG',
   }
 };
 
