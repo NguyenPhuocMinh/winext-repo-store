@@ -21,6 +21,7 @@ find({type, filter = {}, projection = {}, options = {}, populates})
 get({type, id, projection= {}, populates})
 update({type, id, data})
 updateOne({type, id, data})
+updateMany({type, filter = {}, data})
 aggregate({type, pipeline})
 deleted({type, id})
 ```
