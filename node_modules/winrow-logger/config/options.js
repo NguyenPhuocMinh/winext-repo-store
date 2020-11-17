@@ -10,10 +10,10 @@ const config = {
   },
   colors: {
     error: 'bold red cyanBG',
-    debug: 'italic blue',
-    warn: 'inverse yellow yellowBG',
-    data: 'underline magenta',
-    info: 'bold green',
+    debug: 'bold blue blackBG',
+    warn: 'bold yellow blackBG',
+    data: 'bold magenta',
+    info: 'underline green',
   }
 };
 

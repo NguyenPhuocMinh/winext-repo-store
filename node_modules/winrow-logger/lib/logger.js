@@ -21,7 +21,7 @@ const Logger = winston.createLogger({
         labelName,
         label
       } = info;
-      return `${label ? label : labelName}-${level}-[${timestamp}]-[${info.requestId}]: ${message}`;
+      return `${labelName ? labelName : label}-${level}-[${timestamp}]-[${info.requestId}]: ${message}`;
     }),
   ),
   transports: [
