@@ -14,8 +14,8 @@ const Logger = winston.createLogger({
     winston.format.timestamp({ format: 'YYYY-MM-DD HH:mm:ss' }),
     winston.format.label({ label: '[LOGGER]' }),
     winston.format.printf(info => {
-      const { level, message, timestamp, label } = info;
-      return `${label} -- [${timestamp}] -- [${info.requestId}] -- ${level}: ${message}`;
+      const { level, message, timestamp, label, labelName } = info;
+      return `${labelName ? labelName : label} -- ${level} -- [${timestamp}] -- [${info.requestId}]: ${message}`;
     }),
   ),
   transports: [
