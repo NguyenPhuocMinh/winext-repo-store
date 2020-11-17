@@ -11,8 +11,8 @@ const config = {
   colors: {
     error: 'bold red cyanBG',
     debug: 'italic blue',
-    warn: 'italic yellow',
-    data: 'magenta',
+    warn: 'inverse yellow yellowBG',
+    data: 'underline magenta',
     info: 'bold green',
   }
 };
