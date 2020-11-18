@@ -1,6 +1,6 @@
 {
   "name": "winrow-repository",
-  "version": "1.4.0",
+  "version": "1.5.0",
   "description": "Build database mongoose with lib winrow express",
   "main": "index.js",
   "scripts": {
