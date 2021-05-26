@@ -1,19 +1,19 @@
 {
-  "name": "winrow-repository",
+  "name": "winext-repository",
   "version": "1.5.0",
-  "description": "Build database mongoose with lib winrow express",
+  "description": "Build database mongoose with lib winext",
+  "homepage": "https://github.com/NguyenPhuocMinh/winext-repository",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [
-    "winrow",
+    "winext",
     "mongoose"
   ],
   "author": "Minh Nguyễn",
-  "license": "MIT",
+  "license": "ISC",
   "dependencies": {
-    "winrow": "^2.0.8",
-    "winrow-logger": "^1.0.7"
+    "winext": "^1.0.0"
   }
 }

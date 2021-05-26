@@ -3,15 +3,13 @@
 Install the dependencies and devDependencies and start the server.
 
 ```sh
-$ npm install winrow-repository
+$ npm install winext-repository
 ```
 
 ### How to use
 
 ```js
-const dataStore = require('winrow-repository').dataStore;
-
-dataStore.findOne({type, filter = {}, projection = {}, populates});
+const dataStore = require('winext-repository').dataStore;
 
 // method can use
 findOne({type, filter = {}, projection = {}, populates})
