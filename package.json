@@ -1,6 +1,6 @@
 {
   "name": "winext-repository",
-  "version": "1.5.0",
+  "version": "1.0.0",
   "description": "Build database mongoose with lib winext",
   "homepage": "https://github.com/NguyenPhuocMinh/winext-repository",
   "main": "index.js",
