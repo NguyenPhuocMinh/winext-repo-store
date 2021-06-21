@@ -3,14 +3,14 @@
 const winext = require('winext');
 const lodash = winext.require('lodash');
 const mongoose = winext.require('mongoose');
-const { models, modelNames } = mongoose;
+const { models } = mongoose;
 
-function GetModel(type) {
+function LookupModel(schemaModels, type) {
   let model = null;
-  if (lodash.includes(modelNames(), type)) {
+  if (lodash.includes(schemaModels, models[type])) {
     return model = models[type];
   }
   throw new Error('InvalidNameModel');
 };
 
-module.exports = GetModel;
+module.exports = LookupModel;
