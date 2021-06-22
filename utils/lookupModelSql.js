@@ -8,10 +8,9 @@ const { includes } = lodash;
 
 function LookupModelSql(schemaModels, type) {
   let model = null;
-  if (includes(schemaModels), models[type]) {
+  if (includes(schemaModels, models[type])) {
     return model = models[type];
   }
-  console.log("AAAA", model);
   throw new Error('InvalidNameModel');
 };
 
