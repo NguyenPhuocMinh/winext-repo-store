@@ -11,6 +11,7 @@ function LookupModelSql(schemaModels, type) {
   if (includes(schemaModels), models[type]) {
     return model = models[type];
   }
+  console.log("AAAA", model);
   throw new Error('InvalidNameModel');
 };
 
