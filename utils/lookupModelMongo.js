@@ -5,7 +5,7 @@ const lodash = winext.require('lodash');
 const mongoose = winext.require('mongoose');
 const { models } = mongoose;
 
-function LookupModel(schemaModels, type) {
+function LookupModelMongo(schemaModels, type) {
   let model = null;
   if (lodash.includes(schemaModels, models[type])) {
     return model = models[type];
@@ -13,4 +13,4 @@ function LookupModel(schemaModels, type) {
   throw new Error('InvalidNameModel');
 };
 
-module.exports = LookupModel;
+module.exports = LookupModelMongo;
