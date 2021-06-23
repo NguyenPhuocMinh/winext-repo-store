@@ -2,8 +2,8 @@
 
 const winext = require('winext');
 const lodash = winext.require('lodash');
-const { sequelize } = require('../lib/sequelizeStore');
-const { models } = sequelize;
+const sequelizeStore = require('../lib/repository').sequelizeStore;
+const { models } = sequelizeStore.sequelize;
 const { includes } = lodash;
 
 function LookupModelSql(schemaModels, type) {
