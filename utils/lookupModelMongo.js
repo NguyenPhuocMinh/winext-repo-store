@@ -9,9 +9,10 @@ const { includes } = lodash;
 function LookupModelMongo(schemaModels, type) {
   let model = null;
   if (includes(schemaModels, models[type])) {
-    return model = models[type];
+    model = models[type];
+    return model;
   }
   throw new Error('InvalidNameModel');
-};
+}
 
 module.exports = LookupModelMongo;
