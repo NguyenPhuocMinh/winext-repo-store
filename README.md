@@ -5,6 +5,8 @@
 .
 ├── README.md
 ├── index.js
+└── config
+    ├── errorCodes.js
 ├── lib
 │   ├── dataSequelizeTrigger.js
 │   ├── dataStoreTrigger.js
