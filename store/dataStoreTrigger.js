@@ -134,7 +134,7 @@ function DataStoreTrigger(params = {}) {
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
-      throw new Error('IdNotFound');
+      throw errorManager.newError('IdNotFound', errorCodes);
     }
     if (!isEmpty(populates)) {
       return model.findById(id, projection)
@@ -160,7 +160,7 @@ function DataStoreTrigger(params = {}) {
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
-      throw new Error('IdNotFound');
+      throw errorManager.newError('IdNotFound', errorCodes);
     }
     return model.findByIdAndUpdate(id, data, { new: true }).exec()
       .then(docs => docs)
@@ -183,7 +183,7 @@ function DataStoreTrigger(params = {}) {
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
-      throw new Error('IdNotFound');
+      throw errorManager.newError('IdNotFound', errorCodes);
     }
     return model.updateOne({ _id: id }, data).exec()
       .then(docs => docs)
@@ -239,7 +239,7 @@ function DataStoreTrigger(params = {}) {
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
-      throw new Error('IdNotFound');
+      throw errorManager.newError('IdNotFound', errorCodes);
     }
     return model.findByIdAndRemove(id).exec()
       .then(docs => docs)
