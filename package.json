@@ -16,7 +16,7 @@
   "author": "Minh Nguyễn",
   "license": "ISC",
   "dependencies": {
-    "winext": "git+https://github.com/NguyenPhuocMinh/winext.git#f24f5358cd2dfbfe9096ece6a8be7c3073827c65"
+    "winext": "git+https://github.com/NguyenPhuocMinh/winext.git#e96db6129a4ba7d9a61d6e7e250eff044dc2ebb0"
   },
   "devDependencies": {
     "eslint": "^7.29.0",
