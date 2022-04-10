@@ -8,7 +8,7 @@ const dotenv = winext.require('dotenv');
 const lookupModelSql = require('../utils/lookupModelSql');
 const { get, isEmpty, map } = lodash;
 
-function DataSequelizeTrigger(params = {}) {
+function DataSequelizeStore(params = {}) {
   const requestId = get(params, 'requestId');
   const loggerFactory = get(params, 'loggerFactory');
   const modelDescriptor = get(params, 'modelDescriptor', []);
@@ -187,5 +187,5 @@ function DataSequelizeTrigger(params = {}) {
   };
 }
 
-exports = module.exports = new DataSequelizeTrigger();
-exports.register = DataSequelizeTrigger;
+exports = module.exports = new DataSequelizeStore();
+exports.register = DataSequelizeStore;

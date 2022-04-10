@@ -9,7 +9,7 @@ const lookupModelMongo = require('../utils/lookupModelMongo');
 const errorCodes = require('../config/errorCodes');
 const { get, isEmpty, map, isNil } = lodash;
 
-function DataStoreTrigger(params = {}) {
+function DataMongoStore(params = {}) {
   const requestId = get(params, 'requestId');
   const loggerFactory = get(params, 'loggerFactory');
   const modelDescriptor = get(params, 'modelDescriptor', []);
@@ -252,5 +252,5 @@ function DataStoreTrigger(params = {}) {
   };
 }
 
-exports = module.exports = new DataStoreTrigger();
-exports.register = DataStoreTrigger;
+exports = module.exports = new DataMongoStore();
+exports.register = DataMongoStore;
