@@ -1,1 +1,1 @@
-module.exports = require('./lib/repository');
+module.exports = require('./lib/repo-store');
