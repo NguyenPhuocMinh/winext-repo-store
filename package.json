@@ -11,7 +11,8 @@
     "winext",
     "mongoose",
     "mysql",
-    "sequelize"
+    "sequelize",
+    "graphql"
   ],
   "author": "Minh Nguyễn",
   "license": "ISC",

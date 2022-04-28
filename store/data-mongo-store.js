@@ -30,28 +30,44 @@ function DataMongoStore(params = {}) {
    * @param {*} filter
    * @param {*} projection
    * @param {*} populates
+   * @example
+   * const data = await dataMongoStore.findOne({
+   *    type: 'UserModel',
+   *    filter : { deleted: false },
+   *    projection: { __v: 0 },
+   *    populates: [
+   *      {
+   *        path: 'roles',
+   *        select: 'name'
+   *     }
+   *   ]
+   * })
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.findOne
+   * @returns {Object} data
    */
   this.findOne = function ({ type, filter = {}, projection = {}, populates = [] }) {
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (!isEmpty(populates)) {
-      return model.findOne(filter, projection)
-        .then(docs => model.populate(docs, populates))
-        .then(result => result)
-        .catch(err => {
+      return model
+        .findOne(filter, projection)
+        .then((docs) => model.populate(docs, populates))
+        .then((result) => result)
+        .catch((err) => {
           loggerFactory.error(`FindOne with populates has error : ${err} `, {
-            requestId: `${requestId}`
+            requestId: `${requestId}`,
           });
           return Promise.reject(err);
         });
     }
-    return model.findOne(filter, projection)
-      .then(docs => docs)
-      .catch(err => {
+    return model
+      .findOne(filter, projection)
+      .then((docs) => docs)
+      .catch((err) => {
         loggerFactory.error(`FindOne with populates has error ${err}`, {
-          requestId: `${requestId}`
+          requestId: `${requestId}`,
         });
         return Promise.reject(err);
       });
@@ -60,10 +76,16 @@ function DataMongoStore(params = {}) {
    * COUNT
    * @param {*} type
    * @param {*} filter
+   * @example
+   * const data = await dataMongoStore.count({
+   *    type: 'UserModel',
+   *    filter : { deleted: false },
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.countDocuments
+   * @returns {Number} total
    */
   this.count = function ({ type, filter = {} }) {
     loggerFactory.warn(`Model name : ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     return model.countDocuments(filter).exec();
@@ -72,18 +94,25 @@ function DataMongoStore(params = {}) {
    * CREATE
    * @param {*} type
    * @param {*} data
+   * @example
+   * const data = await dataMongoStore.create({
+   *    type: 'UserModel',
+   *    data : { name: 'John Doe },
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.create
+   * @returns {Object} data
    */
   this.create = function ({ type, data }) {
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     const doc = new model(data);
-    return model.create(doc)
-      .then(result => result)
-      .catch(err => {
+    return model
+      .create(doc)
+      .then((result) => result)
+      .catch((err) => {
         loggerFactory.error(`Create has error : ${err}`, {
-          requestId: `${requestId}`
+          requestId: `${requestId}`,
         });
         return Promise.reject(err);
       });
@@ -95,6 +124,25 @@ function DataMongoStore(params = {}) {
    * @param {*} projection
    * @param {*} options
    * @param {*} populates
+   * @example
+   * const data = await dataMongoStore.find({
+   *    type: 'UserModel',
+   *    filter : { deleted: false },
+   *    projection: { __v: 0 },
+   *    options: {
+   *      sort: sort,
+   *      skip: 0,
+   *      limit: 1000
+   *    },
+   *    populates: [
+   *      {
+   *        path: 'roles',
+   *        select: 'name'
+   *     }
+   *   ]
+   * })
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.find
+   * @returns {Array} data
    */
   this.find = function ({ type, filter = {}, projection = {}, options = {}, populates = [] }) {
     if (!isEmpty(options)) {
@@ -106,15 +154,16 @@ function DataMongoStore(params = {}) {
     }
 
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (!isEmpty(populates)) {
-      return model.find(filter, projection, options)
-        .then(docs => model.populate(docs, populates))
-        .catch(err => {
+      return model
+        .find(filter, projection, options)
+        .then((docs) => model.populate(docs, populates))
+        .catch((err) => {
           loggerFactory.error(`Find has error : ${err} `, {
-            requestId: `${requestId}`
+            requestId: `${requestId}`,
           });
           return Promise.reject(err);
         });
@@ -127,21 +176,36 @@ function DataMongoStore(params = {}) {
    * @param {*} id
    * @param {*} projection
    * @param {*} populates
+   * @example
+   * const data = await dataMongoStore.get({
+   *    type: 'UserModel',
+   *    id: '123'
+   *    projection: { __v: 0 },
+   *    populates: [
+   *      {
+   *        path: 'roles',
+   *        select: 'name'
+   *     }
+   *   ]
+   * })
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.findById
+   * @returns {Object} data
    */
   this.get = function ({ type, id, projection = {}, populates }) {
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
     }
     if (!isEmpty(populates)) {
-      return model.findById(id, projection)
-        .then(docs => model.populate(docs, populates))
-        .catch(err => {
+      return model
+        .findById(id, projection)
+        .then((docs) => model.populate(docs, populates))
+        .catch((err) => {
           loggerFactory.error(`Get has error : ${err}`, {
-            requestId: `${requestId}`
+            requestId: `${requestId}`,
           });
           return Promise.reject(err);
         });
@@ -153,20 +217,30 @@ function DataMongoStore(params = {}) {
    * @param {*} type
    * @param {*} id
    * @param {*} data
+   * @example
+   * const data = await dataMongoStore.update({
+   *    type: 'UserModel',
+   *    id: '123'
+   *    data: { name: 'John Doe },
+   * })
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.findByIdAndUpdate
+   * @returns {Object} data
    */
   this.update = function ({ type, id, data }) {
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
     }
-    return model.findByIdAndUpdate(id, data, { new: true }).exec()
-      .then(docs => docs)
-      .catch(err => {
+    return model
+      .findByIdAndUpdate(id, data, { new: true })
+      .exec()
+      .then((docs) => docs)
+      .catch((err) => {
         loggerFactory.error(`Update has error : ${err}`, {
-          requestId: `${requestId}`
+          requestId: `${requestId}`,
         });
         return Promise.reject(err);
       });
@@ -176,20 +250,30 @@ function DataMongoStore(params = {}) {
    * @param {*} type
    * @param {*} id
    * @param {*} data
+   * @example
+   * const data = await dataMongoStore.updateOne({
+   *    type: 'UserModel',
+   *    id: '123'
+   *    data: { name: 'John Doe' },
+   * })
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.updateOne
+   * @returns {Object} data
    */
   this.updateOne = function ({ type, id, data }) {
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
     }
-    return model.updateOne({ _id: id }, data).exec()
-      .then(docs => docs)
-      .catch(err => {
+    return model
+      .updateOne({ _id: id }, data)
+      .exec()
+      .then((docs) => docs)
+      .catch((err) => {
         loggerFactory.error(`UpdateOne has error : ${err}`, {
-          requestId: `${requestId}`
+          requestId: `${requestId}`,
         });
         return Promise.reject(err);
       });
@@ -199,10 +283,18 @@ function DataMongoStore(params = {}) {
    * @param {*} type
    * @param {*} filter
    * @param {*} data
+   * @example
+   * const data = await dataMongoStore.updateMany({
+   *    type: 'UserModel',
+   *    filter: { deleted: false },
+   *    data: { deleted: true },
+   * })
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.updateMany
+   * @returns {Object} data
    */
   this.updateMany = function ({ type, filter, data = {} }) {
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     return model.updateMany(filter, data).exec();
@@ -211,19 +303,30 @@ function DataMongoStore(params = {}) {
    * AGGREGATE
    * @param {*} type
    * @param {*} pipeline
+   * @example
+   * const data = await dataMongoStore.aggregate({
+   *    type: 'UserModel',
+   *    pipeline: [
+   *      { $group: { _id: null, maxBalance: { $max: '$balance' }}},
+   *      { $project: { _id: 0, maxBalance: 1 }}
+   *    ],
+   * })
+   * @see https://mongoosejs.com/docs/api/aggregate.html#aggregate_Aggregate
+   * @returns {Array} data
    */
   // aggregate
-  this.aggregate = function ({ type, pipeline }) {
+  this.aggregate = function ({ type, pipeline = [] }) {
     loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
-    return model.aggregate(pipeline)
+    return model
+      .aggregate(pipeline)
       .exec()
-      .then(docs => docs)
-      .catch(err => {
+      .then((docs) => docs)
+      .catch((err) => {
         loggerFactory.error(`Aggregate has error : ${err}`, {
-          requestId: `${requestId}`
+          requestId: `${requestId}`,
         });
         return Promise.reject(err);
       });
@@ -232,20 +335,29 @@ function DataMongoStore(params = {}) {
    * DELETED
    * @param {*} type
    * @param {*} id
+   * @example
+   * const data = await dataMongoStore.deleted({
+   *    type: 'UserModel',
+   *    id: '123'
+   * })
+   * @see https://mongoosejs.com/docs/api/model.html#model_Model.findByIdAndRemove
+   * @returns {Array} data
    */
   this.deleted = function ({ type, id }) {
     loggerFactory.warn(`Model name: ${type}`, `${id}`, {
-      requestId: `${requestId}`
+      requestId: `${requestId}`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
     }
-    return model.findByIdAndRemove(id).exec()
-      .then(docs => docs)
-      .catch(err => {
+    return model
+      .findByIdAndRemove(id)
+      .exec()
+      .then((docs) => docs)
+      .catch((err) => {
         loggerFactory.error(`deleted has error : ${err}`, {
-          requestId: `${requestId}`
+          requestId: `${requestId}`,
         });
         return Promise.reject(err);
       });

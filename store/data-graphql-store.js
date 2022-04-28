@@ -5,8 +5,8 @@ const Promise = winext.require('bluebird');
 const lodash = winext.require('lodash');
 const fetch = winext.require('node-fetch');
 const dotenv = winext.require('dotenv');
-const { get, isEmpty } = lodash;
-const { mutation } = require('gql-query-builder');
+const { get } = lodash;
+const { query, mutation } = require('gql-query-builder');
 
 function DataGraphqlStore(params = {}) {
   const requestId = get(params, 'requestId');
@@ -21,6 +21,19 @@ function DataGraphqlStore(params = {}) {
 
   const endpoint = `${protocol}://${hostServer}:${portServer}${pathGraphql}`;
 
+  /**
+   * Query graphql data
+   * @param {string} operationName
+   * @param {string} returnFields
+   * @param {string} variables
+   * @see https://www.npmjs.com/package/gql-query-builder
+   * @example
+   * const variables = {
+   *    name: { value: "Tyrion Lannister", required: true },
+   * }
+   * const query = await queryData({ operationName: 'author', returnFields = ['id', 'name'], variables })
+   * @returns {Object} data
+   */
   this.queryData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
       loggerFactory.warn(`queryData has been start with`, {
@@ -30,22 +43,23 @@ function DataGraphqlStore(params = {}) {
           fields: returnFields,
         },
       });
-      const query = `
-        query RootQuery {
-         ${operationName} {
-            ${returnFields}
-          }
-        }`;
+
+      const queryBuilder = query({
+        operation: operationName,
+        variables: variables,
+        fields: returnFields,
+      });
+
       const response = await fetch(endpoint, {
         method: 'POST',
-        body: JSON.stringify({ query, variables }),
+        body: JSON.stringify({ query: queryBuilder.query, variables: queryBuilder.variables }),
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
       loggerFactory.warn(`queryData has been end`, {
         requestId: `${requestId}`,
       });
-      return !isEmpty(data.data) ? data.data : {};
+      return data;
     } catch (err) {
       loggerFactory.error(`queryData graphql has been error: ${err}`, {
         requestId: `${requestId}`,
@@ -54,7 +68,20 @@ function DataGraphqlStore(params = {}) {
     }
   };
 
-  this.mutationData = async function ({ operationName, returnFields = [], dataFields, variables = {} }) {
+  /**
+   * Mutation graphql data
+   * @param {string} operationName
+   * @param {string} returnFields
+   * @param {string} variables
+   * @see https://www.npmjs.com/package/gql-query-builder
+   * @example
+   * const variables = {
+   *    name: { value: "Tyrion Lannister", required: true },
+   * }
+   * const query = await queryData({ operationName: 'author', returnFields = ['id', 'name'], variables })
+   * @returns {Object} data
+   */
+  this.mutationData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
       loggerFactory.warn(`mutationData has been start with`, {
         requestId: `${requestId}`,
@@ -63,30 +90,23 @@ function DataGraphqlStore(params = {}) {
           variables: variables,
         },
       });
-      const query = mutation({
-        operation: 'thoughtCreate',
-        variables: {
-          name: 'Tyrion Lannister',
-          thought: 'I drink and I know things.',
-        },
-        fields: ['id'],
+
+      const queryBuilder = mutation({
+        operation: operationName,
+        variables: variables,
+        fields: returnFields,
       });
-      // const mutation = `
-      //   mutation RootMutation {
-      //    ${operationName}(${dataFields}) {
-      //       ${returnFields}
-      //     }
-      //   }`;
+
       const response = await fetch(endpoint, {
         method: 'POST',
-        body: JSON.stringify({ query, variables: variables }),
+        body: JSON.stringify({ query: queryBuilder.query, variables: queryBuilder.variables }),
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
       loggerFactory.warn(`mutationData has been end`, {
         requestId: `${requestId}`,
       });
-      return !isEmpty(data.data) ? data.data : {};
+      return response.status === 200 ? data.data : data.errors;
     } catch (err) {
       loggerFactory.error(`mutationData graphql has been error: ${err}`, {
         requestId: `${requestId}`,
