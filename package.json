@@ -16,6 +16,7 @@
   "author": "Minh Nguyễn",
   "license": "ISC",
   "dependencies": {
+    "gql-query-builder": "^3.6.0",
     "winext": "git+https://github.com/NguyenPhuocMinh/winext.git#9d51f82ec0b867cbd072ec2a05031653d2c25ba3"
   },
   "devDependencies": {
