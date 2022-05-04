@@ -217,6 +217,7 @@ function DataMongoStore(params = {}) {
    * @param {*} type
    * @param {*} id
    * @param {*} data
+   * @param {*} options
    * @example
    * const data = await dataMongoStore.update({
    *    type: 'UserModel',
@@ -226,7 +227,7 @@ function DataMongoStore(params = {}) {
    * @see https://mongoosejs.com/docs/api/model.html#model_Model.findByIdAndUpdate
    * @returns {Object} data
    */
-  this.update = function ({ type, id, data }) {
+  this.update = function ({ type, id, data, options = { new: true } }) {
     loggerFactory.warn(`Model name: ${type}`, {
       requestId: `${requestId}`,
     });
@@ -235,7 +236,7 @@ function DataMongoStore(params = {}) {
       throw errorManager.newError('IdNotFound', errorCodes);
     }
     return model
-      .findByIdAndUpdate(id, data, { new: true })
+      .findByIdAndUpdate(id, data, options)
       .exec()
       .then((docs) => docs)
       .catch((err) => {
