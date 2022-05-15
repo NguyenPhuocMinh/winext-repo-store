@@ -8,6 +8,7 @@ const dotenv = winext.require('dotenv');
 const errorManager = winext.require('winext-error-manager');
 const lookupModelSql = require('../utils/lookupModelSql');
 const errorCodes = require('../config/errorCodes');
+const { MANY_TO_MANY } = require('../config/associations');
 const { get, isEmpty, map } = lodash;
 
 function DataSequelizeStore(params = {}) {
@@ -260,7 +261,7 @@ function DataSequelizeStore(params = {}) {
    *      }
    *    },
    *    ref: {
-   *      belongsToMany: 'RoleModel'
+   *      belongsToMany: 'RoleModel' // many-to-many
    *    },
    *    intermediateTable: 'UserRoleModel'
    * })
@@ -273,22 +274,14 @@ function DataSequelizeStore(params = {}) {
     try {
       loggerFactory.warn(`func findCreate has been start`, {
         requestId: `${requestId}`,
-        args: {
-          options: options,
-          ref: ref,
-        },
       });
       const model = lookupModelSql(schemaModels, type, sequelize);
       await model.sync();
 
       if (!isEmpty(ref)) {
-        if (Object.prototype.hasOwnProperty.call(ref, 'belongsToMany')) {
+        if (Object.prototype.hasOwnProperty.call(ref, MANY_TO_MANY)) {
           if (!isEmpty(intermediateTable)) {
-            const typeBelongsToMany = get(ref, 'belongsToMany');
-            const modelBelongsToMany = lookupModelSql(schemaModels, typeBelongsToMany, sequelize);
-            await modelBelongsToMany.sync();
-            model.belongsToMany(modelBelongsToMany, { through: intermediateTable });
-            modelBelongsToMany.belongsToMany(model, { through: intermediateTable });
+            await this.callRefManyToMany({ model, ref, intermediateTable });
           } else {
             throw errorManager.newError('IntermediateTableRequired', errorCodes);
           }
@@ -368,6 +361,14 @@ function DataSequelizeStore(params = {}) {
         });
         return Promise.reject(err);
       });
+  };
+
+  this.callRefManyToMany = async function ({ model, ref, intermediateTable }) {
+    const typeBelongsToMany = get(ref, MANY_TO_MANY);
+    const modelBelongsToMany = lookupModelSql(schemaModels, typeBelongsToMany, sequelize);
+    await modelBelongsToMany.sync();
+    model.belongsToMany(modelBelongsToMany, { through: intermediateTable });
+    modelBelongsToMany.belongsToMany(model, { through: intermediateTable });
   };
 }
 
