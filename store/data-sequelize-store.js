@@ -5,7 +5,9 @@ const Promise = winext.require('bluebird');
 const lodash = winext.require('lodash');
 const Sequelize = winext.require('sequelize');
 const dotenv = winext.require('dotenv');
+const errorManager = winext.require('winext-error-manager');
 const lookupModelSql = require('../utils/lookupModelSql');
+const errorCodes = require('../config/errorCodes');
 const { get, isEmpty, map } = lodash;
 
 function DataSequelizeStore(params = {}) {
@@ -246,6 +248,8 @@ function DataSequelizeStore(params = {}) {
    * FIND OR CREATE
    * @param {*} type
    * @param {*} options
+   * @param {*} ref
+   * @param {*} intermediateTable
    * @example
    * const [user, created] = await dataSequelizeStore.findCreate({
    *    type: 'UserModel',
@@ -255,23 +259,55 @@ function DataSequelizeStore(params = {}) {
    *        job: 'Technical Lead JavaScript'
    *      }
    *    },
+   *    ref: {
+   *      belongsToMany: 'RoleModel'
+   *    },
+   *    intermediateTable: 'UserRoleModel'
    * })
-   * @returns {Promise}
+   * @returns {Object} data
    */
-  this.findCreate = function ({ type, options = {} }) {
+  this.findCreate = async function ({ type, options = {}, ref = {}, intermediateTable = '' }) {
     loggerFactory.warn(`Model name: ${type}`, {
       requestId: `${requestId}`,
     });
-    const model = lookupModelSql(schemaModels, type, sequelize);
-    return model
-      .findOrCreate(options)
-      .then((result) => result)
-      .catch((err) => {
-        loggerFactory.error(`FindCreate has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
-        return Promise.reject(err);
+    try {
+      loggerFactory.warn(`func findCreate has been start`, {
+        requestId: `${requestId}`,
+        args: {
+          options: options,
+          ref: ref,
+        },
       });
+      const model = lookupModelSql(schemaModels, type, sequelize);
+      await model.sync();
+
+      if (!isEmpty(ref)) {
+        if (Object.prototype.hasOwnProperty.call(ref, 'belongsToMany')) {
+          if (!isEmpty(intermediateTable)) {
+            const typeBelongsToMany = get(ref, 'belongsToMany');
+            const modelBelongsToMany = lookupModelSql(schemaModels, typeBelongsToMany, sequelize);
+            await modelBelongsToMany.sync();
+            model.belongsToMany(modelBelongsToMany, { through: intermediateTable });
+            modelBelongsToMany.belongsToMany(model, { through: intermediateTable });
+          } else {
+            throw errorManager.newError('IntermediateTableRequired', errorCodes);
+          }
+        }
+      }
+
+      const data = await model.findOrCreate(options);
+
+      loggerFactory.warn(`func findCreate has been end`, {
+        requestId: `${requestId}`,
+      });
+
+      return data;
+    } catch (err) {
+      loggerFactory.error(`func findCreate has error: ${err}`, {
+        requestId: `${requestId}`,
+      });
+      return Promise.reject(err);
+    }
   };
   /**
    * FIND AND COUNT ALL

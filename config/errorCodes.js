@@ -11,6 +11,11 @@ const errorCodes = {
     returnCode: 4001,
     statusCode: 400
   },
+  IntermediateTableRequired: {
+    message: 'Intermediate table is required',
+    returnCode: 4002,
+    statusCode: 400
+  },
 };
 
 module.exports = errorCodes;
