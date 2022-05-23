@@ -10,7 +10,7 @@ const errorCodes = require('../config/errorCodes');
 const { get, isEmpty, map, isNil } = lodash;
 
 function DataMongoStore(params = {}) {
-  const loggerFactory = get(params, 'loggerFactory');
+  const loggerTracer = get(params, 'loggerTracer');
   const modelDescriptor = get(params, 'modelDescriptor', []);
 
   let schemaModels;
@@ -45,7 +45,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.findOne = function ({ type, filter = {}, projection = {}, populates = [] }) {
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     if (!isEmpty(populates)) {
       return model
@@ -53,7 +53,7 @@ function DataMongoStore(params = {}) {
         .then((docs) => model.populate(docs, populates))
         .then((result) => result)
         .catch((err) => {
-          loggerFactory.error(`FindOne with populates has error : ${err} `);
+          loggerTracer.error(`FindOne with populates has error : ${err} `);
           return Promise.reject(err);
         });
     }
@@ -61,7 +61,7 @@ function DataMongoStore(params = {}) {
       .findOne(filter, projection)
       .then((docs) => docs)
       .catch((err) => {
-        loggerFactory.error(`FindOne with populates has error ${err}`);
+        loggerTracer.error(`FindOne with populates has error ${err}`);
         return Promise.reject(err);
       });
   };
@@ -77,7 +77,7 @@ function DataMongoStore(params = {}) {
    * @returns {Number} total
    */
   this.count = function ({ type, filter = {} }) {
-    loggerFactory.warn(`Model name : ${type}`);
+    loggerTracer.warn(`Model name : ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     return model.countDocuments(filter).exec();
   };
@@ -93,14 +93,14 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.create = function ({ type, data }) {
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     const doc = new model(data);
     return model
       .create(doc)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`Create has error : ${err}`);
+        loggerTracer.error(`Create has error : ${err}`);
         return Promise.reject(err);
       });
   };
@@ -140,14 +140,14 @@ function DataMongoStore(params = {}) {
       }
     }
 
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     if (!isEmpty(populates)) {
       return model
         .find(filter, projection, options)
         .then((docs) => model.populate(docs, populates))
         .catch((err) => {
-          loggerFactory.error(`Find has error : ${err} `);
+          loggerTracer.error(`Find has error : ${err} `);
           return Promise.reject(err);
         });
     }
@@ -175,7 +175,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.get = function ({ type, id, projection = {}, populates }) {
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
@@ -185,7 +185,7 @@ function DataMongoStore(params = {}) {
         .findById(id, projection)
         .then((docs) => model.populate(docs, populates))
         .catch((err) => {
-          loggerFactory.error(`Get has error : ${err}`);
+          loggerTracer.error(`Get has error : ${err}`);
           return Promise.reject(err);
         });
     }
@@ -207,7 +207,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.update = function ({ type, id, data, options = { new: true } }) {
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
@@ -217,7 +217,7 @@ function DataMongoStore(params = {}) {
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerFactory.error(`Update has error : ${err}`);
+        loggerTracer.error(`Update has error : ${err}`);
         return Promise.reject(err);
       });
   };
@@ -236,7 +236,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.updateOne = function ({ type, id, data }) {
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
@@ -246,7 +246,7 @@ function DataMongoStore(params = {}) {
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerFactory.error(`UpdateOne has error : ${err}`);
+        loggerTracer.error(`UpdateOne has error : ${err}`);
         return Promise.reject(err);
       });
   };
@@ -265,7 +265,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.updateMany = function ({ type, filter, data = {} }) {
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     return model.updateMany(filter, data).exec();
   };
@@ -286,14 +286,14 @@ function DataMongoStore(params = {}) {
    */
   // aggregate
   this.aggregate = function ({ type, pipeline = [] }) {
-    loggerFactory.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name: ${type}`);
     const model = lookupModelMongo(schemaModels, type);
     return model
       .aggregate(pipeline)
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerFactory.error(`Aggregate has error : ${err}`);
+        loggerTracer.error(`Aggregate has error : ${err}`);
         return Promise.reject(err);
       });
   };
@@ -310,7 +310,7 @@ function DataMongoStore(params = {}) {
    * @returns {Array} data
    */
   this.deleted = function ({ type, id }) {
-    loggerFactory.warn(`Model name: ${type}`, `${id}`);
+    loggerTracer.warn(`Model name: ${type}`, `${id}`);
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
       throw errorManager.newError('IdNotFound', errorCodes);
@@ -320,7 +320,7 @@ function DataMongoStore(params = {}) {
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerFactory.error(`deleted has error : ${err}`);
+        loggerTracer.error(`deleted has error : ${err}`);
         return Promise.reject(err);
       });
   };
