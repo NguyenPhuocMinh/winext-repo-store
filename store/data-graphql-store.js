@@ -4,20 +4,19 @@ const winext = require('winext');
 const Promise = winext.require('bluebird');
 const lodash = winext.require('lodash');
 const fetch = winext.require('node-fetch');
-const dotenv = winext.require('dotenv');
-const { get } = lodash;
 const { query, mutation } = require('gql-query-builder');
+const { get } = lodash;
+
+const profiles = require('../conf/profiles');
 
 function DataGraphqlStore(params = {}) {
-  const requestId = get(params, 'requestId');
   const loggerFactory = get(params, 'loggerFactory');
   const graphqlConfig = get(params, 'config.graphql');
-  // config env
-  dotenv.config();
-  const protocol = process.env.PROTOCOL || 'http';
-  const portServer = process.env.SERVER_PORT;
-  const hostServer = process.env.SERVER_HOST;
-  const pathGraphql = process.env.GRAPHQL_PATH || get(graphqlConfig, 'path', '/graphql');
+
+  const protocol = profiles.protocol;
+  const portServer = profiles.portServer;
+  const hostServer = profiles.hostServer;
+  const pathGraphql = profiles.pathGraphql || get(graphqlConfig, 'path', '/graphql');
 
   const endpoint = `${protocol}://${hostServer}:${portServer}${pathGraphql}`;
 
@@ -37,7 +36,6 @@ function DataGraphqlStore(params = {}) {
   this.queryData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
       loggerFactory.warn(`queryData has been start with`, {
-        requestId: `${requestId}`,
         args: {
           operationName: operationName,
           fields: returnFields,
@@ -56,14 +54,10 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerFactory.warn(`queryData has been end`, {
-        requestId: `${requestId}`,
-      });
+      loggerFactory.warn(`queryData has been end`);
       return data;
     } catch (err) {
-      loggerFactory.error(`queryData graphql has been error: ${err}`, {
-        requestId: `${requestId}`,
-      });
+      loggerFactory.error(`queryData graphql has been error: ${err}`);
       return Promise.reject(err);
     }
   };
@@ -84,7 +78,6 @@ function DataGraphqlStore(params = {}) {
   this.mutationData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
       loggerFactory.warn(`mutationData has been start with`, {
-        requestId: `${requestId}`,
         args: {
           operationName: operationName,
           variables: variables,
@@ -103,14 +96,10 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerFactory.warn(`mutationData has been end`, {
-        requestId: `${requestId}`,
-      });
+      loggerFactory.warn(`mutationData has been end`);
       return response.status === 200 ? data.data : data.errors;
     } catch (err) {
-      loggerFactory.error(`mutationData graphql has been error: ${err}`, {
-        requestId: `${requestId}`,
-      });
+      loggerFactory.error(`mutationData graphql has been error: ${err}`);
       return Promise.reject(err);
     }
   };

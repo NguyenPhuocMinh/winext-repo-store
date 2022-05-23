@@ -6,13 +6,15 @@ const lodash = winext.require('lodash');
 const Sequelize = winext.require('sequelize');
 const dotenv = winext.require('dotenv');
 const errorManager = winext.require('winext-error-manager');
-const lookupModelSql = require('../utils/lookupModelSql');
+const lookupModelSql = require('../utils/lookup-model-sql-util');
 const errorCodes = require('../config/errorCodes');
 const { MANY_TO_MANY } = require('../config/associations');
 const { get, isEmpty, map } = lodash;
 
+const options = require('../conf/options');
+const profiles = require('../conf/profiles');
+
 function DataSequelizeStore(params = {}) {
-  const requestId = get(params, 'requestId');
   const loggerFactory = get(params, 'loggerFactory');
   const modelDescriptor = get(params, 'modelDescriptor', []);
   // config env
@@ -20,13 +22,13 @@ function DataSequelizeStore(params = {}) {
 
   const mysqlConfig = get(params, 'config.mysql');
   const enableMySql = get(mysqlConfig, 'enable', false);
-  const hostMySql = process.env.SQL_HOST || get(mysqlConfig, 'host', 'localhost');
-  const portMySql = process.env.SQL_PORT || get(mysqlConfig, 'port', 3306);
-  const userMysql = process.env.SQL_USER || get(mysqlConfig, 'user', 'root');
-  const passwordMysql = process.env.SQL_PASSWORD || get(mysqlConfig, 'password', 'root');
-  const databaseMySql = process.env.SQL_DATABASE || get(mysqlConfig, 'name', 'database');
+  const hostMySql = profiles.hostMySql || get(mysqlConfig, 'host', 'localhost');
+  const portMySql = profiles.portMySql || get(mysqlConfig, 'port', 3306);
+  const userMysql = profiles.userMysql || get(mysqlConfig, 'user', 'root');
+  const passwordMysql = profiles.passwordMysql || get(mysqlConfig, 'password', 'root');
+  const databaseMySql = profiles.databaseMySql || get(mysqlConfig, 'name', 'database');
   const sequelizeOptions = get(mysqlConfig, 'sequelizeOptions');
-  const dialect = get(sequelizeOptions, 'dialect', 'mysql');
+  const dialect = get(sequelizeOptions, 'dialect', options.sequelizeOptions.mysql);
   const pool = get(sequelizeOptions, 'pool', {});
 
   const sequelize = new Sequelize(databaseMySql, userMysql, passwordMysql, {
@@ -65,17 +67,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findOne = function ({ type, options = {} }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findOne(options)
       .then((doc) => doc)
       .catch((err) => {
-        loggerFactory.error(`Find one has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`Find one has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -97,17 +95,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object}
    */
   this.count = function ({ type, options = {} }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .count(options)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`Count has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`Count has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -123,17 +117,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object}
    */
   this.find = function ({ type, options = {} }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findAll(options)
       .then((docs) => docs)
       .catch((err) => {
-        loggerFactory.error(`Find has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`Find has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -149,17 +139,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.create = function ({ type, data }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .create(data)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`Create has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`Create has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -177,17 +163,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.createMany = function ({ type, data = {}, options = {} }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .bulkCreate([data], options)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`Create many has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`Create many has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -205,17 +187,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.update = function ({ type, data = {}, options = {} }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .update(data, options)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`Update has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`Update has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -231,17 +209,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.deleted = function ({ type, options = {} }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .destroy(options)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`Deleted has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`Deleted has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -268,13 +242,9 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findCreate = async function ({ type, options = {}, ref = {}, intermediateTable = '' }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     try {
-      loggerFactory.warn(`func findCreate has been start`, {
-        requestId: `${requestId}`,
-      });
+      loggerFactory.warn(`func findCreate has been start`);
       const model = lookupModelSql(schemaModels, type, sequelize);
       await model.sync();
 
@@ -290,15 +260,11 @@ function DataSequelizeStore(params = {}) {
 
       const data = await model.findOrCreate(options);
 
-      loggerFactory.warn(`func findCreate has been end`, {
-        requestId: `${requestId}`,
-      });
+      loggerFactory.warn(`func findCreate has been end`);
 
       return data;
     } catch (err) {
-      loggerFactory.error(`func findCreate has error: ${err}`, {
-        requestId: `${requestId}`,
-      });
+      loggerFactory.error(`func findCreate has error: ${err}`);
       return Promise.reject(err);
     }
   };
@@ -322,17 +288,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Promise}
    */
   this.findCountAll = function ({ type, options = {} }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findAndCountAll(options)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`FindCountAll has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`FindCountAll has error: ${err}`);
         return Promise.reject(err);
       });
   };
@@ -348,17 +310,13 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findByPk = function ({ type, pk }) {
-    loggerFactory.warn(`Model name: ${type}`, {
-      requestId: `${requestId}`,
-    });
+    loggerFactory.warn(`Model name: ${type}`);
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findByPk(pk)
       .then((result) => result)
       .catch((err) => {
-        loggerFactory.error(`FindByPk has error: ${err}`, {
-          requestId: `${requestId}`,
-        });
+        loggerFactory.error(`FindByPk has error: ${err}`);
         return Promise.reject(err);
       });
   };
