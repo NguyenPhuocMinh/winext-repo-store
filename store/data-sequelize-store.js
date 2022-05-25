@@ -65,13 +65,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findOne = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findOne(options)
       .then((doc) => doc)
       .catch((err) => {
-        loggerTracer.error(`Find one has error: ${err}`);
+        loggerTracer.error(`Find one has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -93,13 +97,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object}
    */
   this.count = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .count(options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Count has error: ${err}`);
+        loggerTracer.error(`Count has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -115,13 +123,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object}
    */
   this.find = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findAll(options)
       .then((docs) => docs)
       .catch((err) => {
-        loggerTracer.error(`Find has error: ${err}`);
+        loggerTracer.error(`Find has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -137,13 +149,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.create = function ({ type, data }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .create(data)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Create has error: ${err}`);
+        loggerTracer.error(`Create has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -161,13 +177,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.createMany = function ({ type, data = {}, options = {} }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .bulkCreate([data], options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Create many has error: ${err}`);
+        loggerTracer.error(`Create many has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -185,13 +205,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.update = function ({ type, data = {}, options = {} }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .update(data, options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Update has error: ${err}`);
+        loggerTracer.error(`Update has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -207,13 +231,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.deleted = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .destroy(options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Deleted has error: ${err}`);
+        loggerTracer.error(`Deleted has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -240,7 +268,9 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findCreate = async function ({ type, options = {}, ref = {}, intermediateTable = '' }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     try {
       loggerTracer.warn(`func findCreate has been start`);
       const model = lookupModelSql(schemaModels, type, sequelize);
@@ -262,7 +292,9 @@ function DataSequelizeStore(params = {}) {
 
       return data;
     } catch (err) {
-      loggerTracer.error(`func findCreate has error: ${err}`);
+      loggerTracer.error(`func findCreate has error`, {
+        args: err,
+      });
       return Promise.reject(err);
     }
   };
@@ -286,13 +318,17 @@ function DataSequelizeStore(params = {}) {
    * @returns {Promise}
    */
   this.findCountAll = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findAndCountAll(options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`FindCountAll has error: ${err}`);
+        loggerTracer.error(`FindCountAll has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
@@ -308,23 +344,42 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findByPk = function ({ type, pk }) {
-    loggerTracer.warn(`Model name: ${type}`);
+    loggerTracer.warn(`Model name`, {
+      args: [type],
+    });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
       .findByPk(pk)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`FindByPk has error: ${err}`);
+        loggerTracer.error(`FindByPk has error`, {
+          args: err,
+        });
         return Promise.reject(err);
       });
   };
 
   this.callRefManyToMany = async function ({ model, ref, intermediateTable }) {
-    const typeBelongsToMany = get(ref, manyToMany);
-    const modelBelongsToMany = lookupModelSql(schemaModels, typeBelongsToMany, sequelize);
-    await modelBelongsToMany.sync();
-    model.belongsToMany(modelBelongsToMany, { through: intermediateTable });
-    modelBelongsToMany.belongsToMany(model, { through: intermediateTable });
+    try {
+      loggerTracer.warn(`CallRefManyToMany has been start`, {
+        args: {
+          model: model,
+          ref: ref,
+          intermediateTable: intermediateTable,
+        },
+      });
+      const typeBelongsToMany = get(ref, manyToMany);
+      const modelBelongsToMany = lookupModelSql(schemaModels, typeBelongsToMany, sequelize);
+      await modelBelongsToMany.sync();
+      model.belongsToMany(modelBelongsToMany, { through: intermediateTable });
+      modelBelongsToMany.belongsToMany(model, { through: intermediateTable });
+      loggerTracer.warn(`CallRefManyToMany has been end`);
+    } catch (err) {
+      loggerTracer.error(`CallRefManyToMany has error`, {
+        args: err,
+      });
+      return Promise.reject(err);
+    }
   };
 }
 

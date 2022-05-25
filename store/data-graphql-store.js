@@ -35,7 +35,7 @@ function DataGraphqlStore(params = {}) {
    */
   this.queryData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
-      loggerFactory.warn(`queryData has been start with`, {
+      loggerFactory.warn(`QueryData has been start with`, {
         args: {
           operationName: operationName,
           fields: returnFields,
@@ -54,10 +54,12 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerFactory.warn(`queryData has been end`);
+      loggerFactory.warn(`QueryData has been end`);
       return data;
     } catch (err) {
-      loggerFactory.error(`queryData graphql has been error: ${err}`);
+      loggerFactory.error(`QueryData graphql has been error`, {
+        args: err,
+      });
       return Promise.reject(err);
     }
   };
@@ -77,7 +79,7 @@ function DataGraphqlStore(params = {}) {
    */
   this.mutationData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
-      loggerFactory.warn(`mutationData has been start with`, {
+      loggerFactory.warn(`MutationData has been start with`, {
         args: {
           operationName: operationName,
           variables: variables,
@@ -96,10 +98,12 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerFactory.warn(`mutationData has been end`);
+      loggerFactory.warn(`MutationData has been end`);
       return response.status === 200 ? data.data : data.errors;
     } catch (err) {
-      loggerFactory.error(`mutationData graphql has been error: ${err}`);
+      loggerFactory.error(`MutationData graphql has been error`, {
+        args: err,
+      });
       return Promise.reject(err);
     }
   };
