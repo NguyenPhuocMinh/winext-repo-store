@@ -10,7 +10,7 @@ const { get } = lodash;
 const profiles = require('../conf/profiles');
 
 function DataGraphqlStore(params = {}) {
-  const loggerFactory = get(params, 'loggerFactory');
+  const loggerTracer = get(params, 'loggerTracer');
   const graphqlConfig = get(params, 'config.graphql');
 
   const protocol = profiles.protocol;
@@ -35,7 +35,7 @@ function DataGraphqlStore(params = {}) {
    */
   this.queryData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
-      loggerFactory.warn(`QueryData has been start with`, {
+      loggerTracer.warn(`QueryData has been start with`, {
         args: {
           operationName: operationName,
           fields: returnFields,
@@ -54,10 +54,10 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerFactory.warn(`QueryData has been end`);
+      loggerTracer.warn(`QueryData has been end`);
       return data;
     } catch (err) {
-      loggerFactory.error(`QueryData graphql has been error`, {
+      loggerTracer.error(`QueryData graphql has been error`, {
         args: err.message,
       });
       return Promise.reject(err);
@@ -79,7 +79,7 @@ function DataGraphqlStore(params = {}) {
    */
   this.mutationData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
-      loggerFactory.warn(`MutationData has been start with`, {
+      loggerTracer.warn(`MutationData has been start with`, {
         args: {
           operationName: operationName,
           variables: variables,
@@ -98,10 +98,10 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerFactory.warn(`MutationData has been end`);
+      loggerTracer.warn(`MutationData has been end`);
       return response.status === 200 ? data.data : data.errors;
     } catch (err) {
-      loggerFactory.error(`MutationData graphql has been error`, {
+      loggerTracer.error(`MutationData graphql has been error`, {
         args: err.message,
       });
       return Promise.reject(err);
