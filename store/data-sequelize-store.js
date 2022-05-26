@@ -66,7 +66,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.findOne = function ({ type, options = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -98,7 +98,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.count = function ({ type, options = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -124,7 +124,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.find = function ({ type, options = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -150,7 +150,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.create = function ({ type, data }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -178,7 +178,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.createMany = function ({ type, data = {}, options = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -206,7 +206,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.update = function ({ type, data = {}, options = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -232,7 +232,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.deleted = function ({ type, options = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -269,7 +269,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.findCreate = async function ({ type, options = {}, ref = {}, intermediateTable = '' }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     try {
       loggerTracer.warn(`func findCreate has been start`);
@@ -319,7 +319,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.findCountAll = function ({ type, options = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model
@@ -345,7 +345,7 @@ function DataSequelizeStore(params = {}) {
    */
   this.findByPk = function ({ type, pk }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
     return model

@@ -46,7 +46,7 @@ function DataMongoStore(params = {}) {
    */
   this.findOne = function ({ type, filter = {}, projection = {}, populates = [] }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (!isEmpty(populates)) {
@@ -84,7 +84,7 @@ function DataMongoStore(params = {}) {
    */
   this.count = function ({ type, filter = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     return model.countDocuments(filter).exec();
@@ -102,7 +102,7 @@ function DataMongoStore(params = {}) {
    */
   this.create = function ({ type, data }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     const doc = new model(data);
@@ -153,7 +153,7 @@ function DataMongoStore(params = {}) {
     }
 
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (!isEmpty(populates)) {
@@ -192,7 +192,7 @@ function DataMongoStore(params = {}) {
    */
   this.get = function ({ type, id, projection = {}, populates }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
@@ -228,7 +228,7 @@ function DataMongoStore(params = {}) {
    */
   this.update = function ({ type, id, data, options = { new: true } }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
@@ -261,7 +261,7 @@ function DataMongoStore(params = {}) {
    */
   this.updateOne = function ({ type, id, data }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {
@@ -294,7 +294,7 @@ function DataMongoStore(params = {}) {
    */
   this.updateMany = function ({ type, filter, data = {} }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     return model.updateMany(filter, data).exec();
@@ -317,7 +317,7 @@ function DataMongoStore(params = {}) {
   // aggregate
   this.aggregate = function ({ type, pipeline = [] }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     return model
@@ -345,7 +345,7 @@ function DataMongoStore(params = {}) {
    */
   this.deleted = function ({ type, id }) {
     loggerTracer.warn(`Model name`, {
-      args: [type],
+      args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
     if (isEmpty(id)) {

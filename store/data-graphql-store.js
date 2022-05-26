@@ -58,7 +58,7 @@ function DataGraphqlStore(params = {}) {
       return data;
     } catch (err) {
       loggerFactory.error(`QueryData graphql has been error`, {
-        args: err,
+        args: err.message,
       });
       return Promise.reject(err);
     }
@@ -102,7 +102,7 @@ function DataGraphqlStore(params = {}) {
       return response.status === 200 ? data.data : data.errors;
     } catch (err) {
       loggerFactory.error(`MutationData graphql has been error`, {
-        args: err,
+        args: err.message,
       });
       return Promise.reject(err);
     }
