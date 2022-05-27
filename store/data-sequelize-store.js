@@ -55,8 +55,8 @@ function DataSequelizeStore(params = {}) {
 
   /**
    * FIND ONE
-   * @param {*} type
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} options
    * @example
    * const data = await dataSequelizeStore.findOne({
    *    type: 'UserModel',
@@ -65,7 +65,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findOne = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.debug(`Function findOne has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -73,7 +73,7 @@ function DataSequelizeStore(params = {}) {
       .findOne(options)
       .then((doc) => doc)
       .catch((err) => {
-        loggerTracer.error(`Find one has error`, {
+        loggerTracer.error(`Function findOne has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -81,8 +81,8 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * COUNT
-   * @param {*} type
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} options
    * @example
    * const data = await dataSequelizeStore.count({
    *    type: 'UserModel',
@@ -97,7 +97,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object}
    */
   this.count = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function count has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -105,7 +105,7 @@ function DataSequelizeStore(params = {}) {
       .count(options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Count has error`, {
+        loggerTracer.error(`Function count has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -113,8 +113,8 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * FIND ALL
-   * @param {*} type
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} options
    * @example
    * const data = await dataSequelizeStore.find({
    *    type: 'UserModel',
@@ -123,7 +123,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object}
    */
   this.find = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function find has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -131,7 +131,7 @@ function DataSequelizeStore(params = {}) {
       .findAll(options)
       .then((docs) => docs)
       .catch((err) => {
-        loggerTracer.error(`Find has error`, {
+        loggerTracer.error(`Function find has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -139,8 +139,8 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * CREATE
-   * @param {*} type
-   * @param {*} data
+   * @argument {*} type
+   * @argument {*} data
    * @example
    * const data = await dataSequelizeStore.create({
    *    type: 'UserModel',
@@ -149,7 +149,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.create = function ({ type, data }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function create has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -157,7 +157,7 @@ function DataSequelizeStore(params = {}) {
       .create(data)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Create has error`, {
+        loggerTracer.error(`Function create has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -165,9 +165,9 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * CREATE MANY
-   * @param {*} type
-   * @param {*} data
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} data
+   * @argument {*} options
    * @example
    * const data = await dataSequelizeStore.createMany({
    *    type: 'UserModel',
@@ -177,7 +177,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.createMany = function ({ type, data = {}, options = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function createMany has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -185,7 +185,7 @@ function DataSequelizeStore(params = {}) {
       .bulkCreate([data], options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Create many has error`, {
+        loggerTracer.error(`Function createMany has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -193,9 +193,9 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * UPDATE
-   * @param {*} type
-   * @param {*} data
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} data
+   * @argument {*} options
    * @example
    * const data = await dataSequelizeStore.update({
    *    type: 'UserModel',
@@ -205,7 +205,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.update = function ({ type, data = {}, options = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function update has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -213,7 +213,7 @@ function DataSequelizeStore(params = {}) {
       .update(data, options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Update has error`, {
+        loggerTracer.error(`Function update has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -221,8 +221,8 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * DELETE
-   * @param {*} type
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} options
    * @example
    * const data = await dataSequelizeStore.deleted({
    *    type: 'UserModel',
@@ -231,7 +231,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.deleted = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function deleted has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -239,7 +239,7 @@ function DataSequelizeStore(params = {}) {
       .destroy(options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Deleted has error`, {
+        loggerTracer.error(`Function deleted has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -247,10 +247,10 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * FIND OR CREATE
-   * @param {*} type
-   * @param {*} options
-   * @param {*} ref
-   * @param {*} intermediateTable
+   * @argument {*} type
+   * @argument {*} options
+   * @argument {*} ref
+   * @argument {*} intermediateTable
    * @example
    * const [user, created] = await dataSequelizeStore.findCreate({
    *    type: 'UserModel',
@@ -268,11 +268,10 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findCreate = async function ({ type, options = {}, ref = {}, intermediateTable = '' }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function findCreate has been start with model name`, {
       args: `[${type}]`,
     });
     try {
-      loggerTracer.warn(`func findCreate has been start`);
       const model = lookupModelSql(schemaModels, type, sequelize);
       await model.sync();
 
@@ -288,11 +287,11 @@ function DataSequelizeStore(params = {}) {
 
       const data = await model.findOrCreate(options);
 
-      loggerTracer.warn(`func findCreate has been end`);
+      loggerTracer.warn(`Function findCreate has been end`);
 
       return data;
     } catch (err) {
-      loggerTracer.error(`func findCreate has error`, {
+      loggerTracer.error(`Function findCreate has error`, {
         args: err,
       });
       return Promise.reject(err);
@@ -300,8 +299,8 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * FIND AND COUNT ALL
-   * @param {*} type
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} options
    * @example
    * const { count, rows } = await dataSequelizeStore.findCountAll({
    *    type: 'UserModel',
@@ -318,7 +317,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Promise}
    */
   this.findCountAll = function ({ type, options = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function findCountAll has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -326,7 +325,7 @@ function DataSequelizeStore(params = {}) {
       .findAndCountAll(options)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`FindCountAll has error`, {
+        loggerTracer.error(`Function findCountAll has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -334,8 +333,8 @@ function DataSequelizeStore(params = {}) {
   };
   /**
    * FIND BY PRIMARY KEY
-   * @param {*} type
-   * @param {*} pk
+   * @argument {*} type
+   * @argument {*} pk
    * @example
    * const data = await dataSequelizeStore.findByPk({
    *    type: 'UserModel',
@@ -344,7 +343,7 @@ function DataSequelizeStore(params = {}) {
    * @returns {Object} data
    */
   this.findByPk = function ({ type, pk }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function findByPk has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelSql(schemaModels, type, sequelize);
@@ -352,7 +351,7 @@ function DataSequelizeStore(params = {}) {
       .findByPk(pk)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`FindByPk has error`, {
+        loggerTracer.error(`Function findByPk has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -361,7 +360,7 @@ function DataSequelizeStore(params = {}) {
 
   this.callRefManyToMany = async function ({ model, ref, intermediateTable }) {
     try {
-      loggerTracer.warn(`CallRefManyToMany has been start`, {
+      loggerTracer.warn(`Function callRefManyToMany has been start with model name`, {
         args: {
           model: model,
           ref: ref,
@@ -373,9 +372,9 @@ function DataSequelizeStore(params = {}) {
       await modelBelongsToMany.sync();
       model.belongsToMany(modelBelongsToMany, { through: intermediateTable });
       modelBelongsToMany.belongsToMany(model, { through: intermediateTable });
-      loggerTracer.warn(`CallRefManyToMany has been end`);
+      loggerTracer.warn(`Function callRefManyToMany has been end`);
     } catch (err) {
-      loggerTracer.error(`CallRefManyToMany has error`, {
+      loggerTracer.error(`Function callRefManyToMany has error`, {
         args: err,
       });
       return Promise.reject(err);

@@ -25,10 +25,10 @@ function DataMongoStore(params = {}) {
 
   /**
    * FIND ONE
-   * @param {*} type
-   * @param {*} filter
-   * @param {*} projection
-   * @param {*} populates
+   * @argument {*} type
+   * @argument {*} filter
+   * @argument {*} projection
+   * @argument {*} populates
    * @example
    * const data = await dataMongoStore.findOne({
    *    type: 'UserModel',
@@ -45,7 +45,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.findOne = function ({ type, filter = {}, projection = {}, populates = [] }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.debug(`Function findOne has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -55,7 +55,7 @@ function DataMongoStore(params = {}) {
         .then((docs) => model.populate(docs, populates))
         .then((result) => result)
         .catch((err) => {
-          loggerTracer.error(`FindOne with populates has error`, {
+          loggerTracer.error(`Function findOne with populates has error`, {
             args: err,
           });
           return Promise.reject(err);
@@ -65,7 +65,7 @@ function DataMongoStore(params = {}) {
       .findOne(filter, projection)
       .then((docs) => docs)
       .catch((err) => {
-        loggerTracer.error(`FindOne with populates has error`, {
+        loggerTracer.error(`Function findOne not populates has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -73,8 +73,8 @@ function DataMongoStore(params = {}) {
   };
   /**
    * COUNT
-   * @param {*} type
-   * @param {*} filter
+   * @argument {*} type
+   * @argument {*} filter
    * @example
    * const data = await dataMongoStore.count({
    *    type: 'UserModel',
@@ -83,7 +83,7 @@ function DataMongoStore(params = {}) {
    * @returns {Number} total
    */
   this.count = function ({ type, filter = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function count has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -91,8 +91,8 @@ function DataMongoStore(params = {}) {
   };
   /**
    * CREATE
-   * @param {*} type
-   * @param {*} data
+   * @argument {*} type
+   * @argument {*} data
    * @example
    * const data = await dataMongoStore.create({
    *    type: 'UserModel',
@@ -101,7 +101,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.create = function ({ type, data }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function create has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -110,7 +110,7 @@ function DataMongoStore(params = {}) {
       .create(doc)
       .then((result) => result)
       .catch((err) => {
-        loggerTracer.error(`Create has error`, {
+        loggerTracer.error(`Function create has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -118,11 +118,11 @@ function DataMongoStore(params = {}) {
   };
   /**
    * FIND
-   * @param {*} type
-   * @param {*} filter
-   * @param {*} projection
-   * @param {*} options
-   * @param {*} populates
+   * @argument {*} type
+   * @argument {*} filter
+   * @argument {*} projection
+   * @argument {*} options
+   * @argument {*} populates
    * @example
    * const data = await dataMongoStore.find({
    *    type: 'UserModel',
@@ -152,7 +152,7 @@ function DataMongoStore(params = {}) {
       }
     }
 
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function find has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -161,7 +161,7 @@ function DataMongoStore(params = {}) {
         .find(filter, projection, options)
         .then((docs) => model.populate(docs, populates))
         .catch((err) => {
-          loggerTracer.error(`Find has error`, {
+          loggerTracer.error(`Function find has error`, {
             args: err,
           });
           return Promise.reject(err);
@@ -171,10 +171,10 @@ function DataMongoStore(params = {}) {
   };
   /**
    * GET
-   * @param {*} type
-   * @param {*} id
-   * @param {*} projection
-   * @param {*} populates
+   * @argument {*} type
+   * @argument {*} id
+   * @argument {*} projection
+   * @argument {*} populates
    * @example
    * const data = await dataMongoStore.get({
    *    type: 'UserModel',
@@ -191,7 +191,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.get = function ({ type, id, projection = {}, populates }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function get has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -203,7 +203,7 @@ function DataMongoStore(params = {}) {
         .findById(id, projection)
         .then((docs) => model.populate(docs, populates))
         .catch((err) => {
-          loggerTracer.error(`Get has error`, {
+          loggerTracer.error(`Function get has error`, {
             args: err,
           });
           return Promise.reject(err);
@@ -213,10 +213,10 @@ function DataMongoStore(params = {}) {
   };
   /**
    * UPDATE
-   * @param {*} type
-   * @param {*} id
-   * @param {*} data
-   * @param {*} options
+   * @argument {*} type
+   * @argument {*} id
+   * @argument {*} data
+   * @argument {*} options
    * @example
    * const data = await dataMongoStore.update({
    *    type: 'UserModel',
@@ -227,7 +227,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.update = function ({ type, id, data, options = { new: true } }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function update has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -239,7 +239,7 @@ function DataMongoStore(params = {}) {
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerTracer.error(`Update has error`, {
+        loggerTracer.error(`Function update has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -247,9 +247,9 @@ function DataMongoStore(params = {}) {
   };
   /**
    * UPDATE ONE
-   * @param {*} type
-   * @param {*} id
-   * @param {*} data
+   * @argument {*} type
+   * @argument {*} id
+   * @argument {*} data
    * @example
    * const data = await dataMongoStore.updateOne({
    *    type: 'UserModel',
@@ -260,7 +260,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.updateOne = function ({ type, id, data }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function updateOne has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -272,7 +272,7 @@ function DataMongoStore(params = {}) {
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerTracer.error(`UpdateOne has error`, {
+        loggerTracer.error(`Function updateOne has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -280,9 +280,9 @@ function DataMongoStore(params = {}) {
   };
   /**
    * UPDATE MANY
-   * @param {*} type
-   * @param {*} filter
-   * @param {*} data
+   * @argument {*} type
+   * @argument {*} filter
+   * @argument {*} data
    * @example
    * const data = await dataMongoStore.updateMany({
    *    type: 'UserModel',
@@ -293,7 +293,7 @@ function DataMongoStore(params = {}) {
    * @returns {Object} data
    */
   this.updateMany = function ({ type, filter, data = {} }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function updateMany has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -301,8 +301,8 @@ function DataMongoStore(params = {}) {
   };
   /**
    * AGGREGATE
-   * @param {*} type
-   * @param {*} pipeline
+   * @argument {*} type
+   * @argument {*} pipeline
    * @example
    * const data = await dataMongoStore.aggregate({
    *    type: 'UserModel',
@@ -316,7 +316,7 @@ function DataMongoStore(params = {}) {
    */
   // aggregate
   this.aggregate = function ({ type, pipeline = [] }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function aggregate has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -325,7 +325,7 @@ function DataMongoStore(params = {}) {
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerTracer.error(`Aggregate has error`, {
+        loggerTracer.error(`Function Aggregate has error`, {
           args: err,
         });
         return Promise.reject(err);
@@ -333,8 +333,8 @@ function DataMongoStore(params = {}) {
   };
   /**
    * DELETED
-   * @param {*} type
-   * @param {*} id
+   * @argument {*} type
+   * @argument {*} id
    * @example
    * const data = await dataMongoStore.deleted({
    *    type: 'UserModel',
@@ -344,7 +344,7 @@ function DataMongoStore(params = {}) {
    * @returns {Array} data
    */
   this.deleted = function ({ type, id }) {
-    loggerTracer.warn(`Model name`, {
+    loggerTracer.warn(`Function deleted has been start with model name`, {
       args: `[${type}]`,
     });
     const model = lookupModelMongo(schemaModels, type);
@@ -356,7 +356,7 @@ function DataMongoStore(params = {}) {
       .exec()
       .then((docs) => docs)
       .catch((err) => {
-        loggerTracer.error(`deleted has error`, {
+        loggerTracer.error(`Function deleted has error`, {
           args: err,
         });
         return Promise.reject(err);

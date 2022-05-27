@@ -35,7 +35,7 @@ function DataGraphqlStore(params = {}) {
    */
   this.queryData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
-      loggerTracer.warn(`QueryData has been start with`, {
+      loggerTracer.info(`QueryData has been start with`, {
         args: {
           operationName: operationName,
           fields: returnFields,
@@ -54,7 +54,7 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerTracer.warn(`QueryData has been end`);
+      loggerTracer.info(`QueryData has been end`);
       return data;
     } catch (err) {
       loggerTracer.error(`QueryData graphql has been error`, {
@@ -79,7 +79,7 @@ function DataGraphqlStore(params = {}) {
    */
   this.mutationData = async function ({ operationName, returnFields = [], variables = {} }) {
     try {
-      loggerTracer.warn(`MutationData has been start with`, {
+      loggerTracer.info(`MutationData has been start with`, {
         args: {
           operationName: operationName,
           variables: variables,
@@ -98,7 +98,7 @@ function DataGraphqlStore(params = {}) {
         headers: { 'Content-Type': 'application/json' },
       });
       const data = await response.json();
-      loggerTracer.warn(`MutationData has been end`);
+      loggerTracer.info(`MutationData has been end`);
       return response.status === 200 ? data.data : data.errors;
     } catch (err) {
       loggerTracer.error(`MutationData graphql has been error`, {
